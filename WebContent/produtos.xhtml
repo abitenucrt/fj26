@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:caelum="http://java.sun.com/jsf/composite/caelum"	>
+	
+<ui:composition template="/_template.xhtml">
+<ui:define name="titulo"> 
+	<title>Produtos</title>
+</ui:define>
+	<ui:define name="corpo">
+		<h:form>
+			<h2>Listagem de Produtos</h2>
+		<fieldset> 
+			<legend>Dados do Produto</legend> 
+			
+			<h:inputHidden value="#{produtoBean.produto.id}" /> 
+			<h:outputText value="Novo Produto"   rendered="empty produtoBean.produto.id" /> 
+			<h:outputText value="Editar Produto" rendered="not empty produtoBean.produto.id" />
+				
+			<caelum:campoTexto id="nome" label="Nome:" value="#{produtoBean.produto.nome}"/>
+			
+			<h:outputLabel value="Descrição:" for="descricao" />
+				 <h:inputTextarea id="descricao" value="#{produtoBean.produto.descricao}" />
+				 
+			 <caelum:campoTexto id="preco" label="Preço:" value="#{produtoBean.produto.preco}"/>
+		    
+				
+			<h:commandButton
+				value="Gravar" action="#{produtoBean.grava}">
+				<f:ajax execute="@form" render="@form" />
+		    </h:commandButton>
+			
+		 </fieldset> 
+			<h:dataTable value="#{produtoBean.produtos}" var="produto"
+				styleClass="dados" rowClasses="impar,par">
+				<h:column>
+					<f:facet name="header">Nome</f:facet> 
+				#{produto.nome} 
+			</h:column>
+				<h:column>
+					<f:facet name="header">Descrição</f:facet> 
+				#{produto.descricao}
+			 </h:column>
+				<h:column>
+					<f:facet name="header">Preço</f:facet> 
+				#{produto.preco} 
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Ações</f:facet>
+
+					<h:commandLink value="Remover" action="#{produtoBean.remove(produto)}"> |
+
+					</h:commandLink>
+
+					<h:commandLink value="Alterar">
+						<f:setPropertyActionListener value="#{produto}"
+							target="#{produtoBean.produto}"></f:setPropertyActionListener>
+					</h:commandLink>
+				</h:column>
+
+			</h:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
